@@ -1,16 +1,14 @@
 # 🌌 Infinity Gaze
 
-A calming, animated breathing website to help you relax, stare into infinity, and just let go.
+_A calming, animated breathing website to help you relax, stare into infinity, and just let go._
 
 ---
 
 ## ✨ Features
 
-- Infinity symbol animation
-- Starry galaxy background
 - Breathing cycle: Inhale → Hold → Exhale → Hold
-- Soothing, transparent prompts: _“Relax. Breathe. Let go.”_
-- Fullscreen, responsive layout
+- _“Relax. Breathe. Let go.”_
+- Responsive layout
 
 ---
 
