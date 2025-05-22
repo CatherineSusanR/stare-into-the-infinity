@@ -1,0 +1,84 @@
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+
+export default function InfinityGaze() {
+  const canvasRef = useRef(null);
+  const [breathText, setBreathText] = useState("Inhale");
+  const [phase, setPhase] = useState("Get ready to breathe deeply. You will inhale, exhale, and hold your breath.");
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    let angle = 0;
+    const stars = Array.from({ length: 300 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      radius: Math.random() * 1.5,
+      opacity: Math.random()
+    }));
+
+    function drawInfinity() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Draw stars
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+        ctx.fill();
+      });
+
+      // Draw infinity symbol
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+
+      for (let t = 0; t < Math.PI * 2; t += 0.01) {
+        let x = 200 * Math.sin(t) / (1 + Math.cos(t) ** 2);
+        let y = 200 * Math.sin(t) * Math.cos(t) / (1 + Math.cos(t) ** 2);
+
+        let dx = width / 2 + x * Math.cos(angle) - y * Math.sin(angle);
+        let dy = height / 3 + x * Math.sin(angle) + y * Math.cos(angle);
+
+        if (t === 0) ctx.moveTo(dx, dy);
+        else ctx.lineTo(dx, dy);
+      }
+
+      ctx.stroke();
+      angle += 0.005;
+      requestAnimationFrame(drawInfinity);
+    }
+
+    drawInfinity();
+
+    const phases = ["Inhale", "Hold", "Exhale", "Hold"];
+    let index = 0;
+
+    const timer = setInterval(() => {
+      index = (index + 1) % phases.length;
+      setBreathText(phases[index]);
+    }, 4000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="w-full h-screen bg-black overflow-hidden relative">
+      <canvas ref={canvasRef} className="absolute top-0 left-0 z-0" />
+      <motion.div
+        className="relative z-10 text-center text-white flex flex-col justify-center items-center h-full px-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2 }}
+      >
+        <h1 className="text-4xl md:text-6xl font-bold mb-4">{breathText}</h1>
+        <p className="text-lg text-white/50 mb-4">Relax. Breathe. Let go.</p>
+        <p className="text-sm text-white/40 mb-12">{phase}</p>
+        <p className="text-md text-white/60 mt-8">Stare into infinity...</p>
+      </motion.div>
+    </div>
+  );
+}
