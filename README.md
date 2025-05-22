@@ -20,10 +20,3 @@ _A calming, animated breathing website to help you relax, stare into infinity, a
 - Tailwind CSS
 
 ---
-
-## 🚀 How to Run
-
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/yourusername/infinity-gaze.git
-   cd infinity-gaze
